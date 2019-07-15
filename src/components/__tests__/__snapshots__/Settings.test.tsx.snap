@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Settings /> renders component 1`] = `
+"
+First Name
+Last Name
+Submit
+Clear
+Reset
+"
+`;

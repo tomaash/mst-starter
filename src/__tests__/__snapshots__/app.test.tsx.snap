@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders <App/> 1`] = `
+"
+MyApp
+Edit 
+src/app.tsx
+ and save to reload.
+Learn React
+status bar
+"
+`;
