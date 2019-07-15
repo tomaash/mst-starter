@@ -15,11 +15,7 @@ const localStorageKey = 'mst-test'
 
 const initialState = localStorage.getItem(localStorageKey)
   ? JSON.parse(localStorage.getItem(localStorageKey))
-  : {
-      userStore: {
-        users: []
-      }
-    }
+  : {}
 
 let store
 let snapshotListener
@@ -34,7 +30,7 @@ function createMainStore(snapshot) {
   store = MainStore.create(snapshot)
 
   // connect devtools
-  // connectReduxDevtools(require('remotedev'), store)
+  connectReduxDevtools(require('remotedev'), store)
 
   // connect local storage
   snapshotListener = onSnapshot(store, snapshot =>
@@ -44,7 +40,7 @@ function createMainStore(snapshot) {
 }
 
 function renderApp(App, store) {
-  render(<App store={store} />, document.getElementById('root'))
+  render(<App mainStore={store} />, document.getElementById('root'))
 }
 
 // Initial render

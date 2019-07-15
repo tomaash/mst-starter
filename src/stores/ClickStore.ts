@@ -1,5 +1,4 @@
-import { values } from 'mobx'
-import { types, getParent, flow } from 'mobx-state-tree'
+import { types } from 'mobx-state-tree'
 
 export const ClickStore = types
   .model('ClickStore', {

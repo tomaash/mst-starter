@@ -1,19 +1,16 @@
-import React, { Component, Suspense } from 'react'
+import React from 'react'
 import { Home } from '~/components/Home'
 import { Profile } from '~/components/Profile'
 import { ListPage } from '~/components/ListPage'
 import { Settings } from '~/components/Settings'
-import { AppStore } from '~/stores/AppStore'
 
-import { createHistory, LocationProvider, Link, Router } from '@reach/router'
+import { createHistory, LocationProvider, Router } from '@reach/router'
 
-import { toJS } from 'mobx'
 import { AppMenu } from '~/components/AppMenu'
-import { Provider, observer } from 'mobx-react'
+import { Provider } from 'mobx-react'
+import { observer } from 'mobx-react-lite'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { UserStore } from '~/stores/UserStore'
-import { MobXProviderContext } from 'mobx-react'
 import { IMainStore } from '~/stores/MainStore'
 
 import {
@@ -40,37 +37,26 @@ library.add(
   faPlusSquare
 )
 
-export const history = createHistory(window as any)
-// const appStore = new AppStore()
-// appStore.setupHistory(history)
+// No window object in test
+export const history = window.history
+  ? createHistory(window as any)
+  : ({ location: { pathname: '/' } } as any)
 
-// const userStore = UserStore.create()
-
-// const stores = { appStore, userStore }
-// export type IStores = typeof stores
-
-// export function useStores() {
-//   return React.useContext(MobXProviderContext) as IStores
-// }
-
-@observer
-export class App extends Component<{ store: IMainStore }> {
-  render() {
-    return (
-      <Provider {...this.props.store}>
-        <LocationProvider history={history}>
-          <div className='flex flex-col h-screen overflow-hidden'>
-            <AppMenu />
-            <Router className='flex-grow overflow-y-auto'>
-              <Home path='/' />
-              <Profile path='profile/:username' />
-              <ListPage path='list' />
-              <Settings path='settings' />
-            </Router>
-            <div className='p-2 bg-primary text-center text-sm'>status bar</div>
-          </div>
-        </LocationProvider>
-      </Provider>
-    )
-  }
-}
+export const App = observer<{ mainStore: IMainStore }>(props => {
+  return (
+    <Provider mainStore={props.mainStore}>
+      <LocationProvider history={history}>
+        <div className='flex flex-col h-screen overflow-hidden'>
+          <AppMenu />
+          <Router className='flex-grow overflow-y-auto'>
+            <Home path='/' />
+            <Profile path='profile/:username' />
+            <ListPage path='list' />
+            <Settings path='settings' />
+          </Router>
+          <div className='p-2 bg-primary text-center text-sm'>status bar</div>
+        </div>
+      </LocationProvider>
+    </Provider>
+  )
+})

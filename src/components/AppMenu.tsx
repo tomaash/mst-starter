@@ -4,11 +4,9 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  Button,
   Drawer,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText
 } from '@material-ui/core'
 

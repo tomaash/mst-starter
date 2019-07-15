@@ -1,5 +1,5 @@
 import { values } from 'mobx'
-import { types, getParent, flow } from 'mobx-state-tree'
+import { types, flow } from 'mobx-state-tree'
 import axios from 'axios'
 
 export const User = types.model('User', {
@@ -28,9 +28,6 @@ export const UserStore = types
     }
     function updateUsers(json) {
       self.users = json.data.data
-      // json.data.data.forEach(user => {
-      //   self.users.put(user)
-      // })
     }
     const loadUsers = flow(function* loadUsers() {
       try {
@@ -38,7 +35,7 @@ export const UserStore = types
         updateUsers(json)
         markLoading(false)
       } catch (err) {
-        console.error('Failed to load books ', err)
+        console.error('Failed to load users ', err)
       }
     })
     return {

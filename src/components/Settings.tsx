@@ -1,28 +1,21 @@
-import React, { Component } from 'react'
-import { observer, inject } from 'mobx-react'
+import React from 'react'
+import { observer } from 'mobx-react-lite'
 import validatorjs from 'validatorjs'
 import MobxReactForm from 'mobx-react-form'
 import dvr from 'mobx-react-form/lib/validators/DVR'
 import { MaterialTextField } from './MaterialTextField'
-import { RouteComponentProps } from '@reach/router'
-import { Button, Snackbar, IconButton } from '@material-ui/core'
-import { AppStore } from '~/stores/AppStore'
-import { observable } from 'mobx'
+import { Button } from '@material-ui/core'
 import { SnackbarPopup } from './shared/SnackbarPopup'
+import { useLocalStore } from 'mobx-react-lite'
+import { RouteComponentProps } from '@reach/router'
 
-interface SettingsProps extends RouteComponentProps {
-  appStore?: AppStore
-}
-
-@inject('appStore')
-@observer
-export class Settings extends Component<SettingsProps> {
-  @observable popupConfig = {
+export const Settings = observer<RouteComponentProps>(props => {
+  const popupConfig = useLocalStore(() => ({
     message: 'Settings updated',
     open: false
-  }
+  }))
 
-  formHooks = {
+  const formHooks = {
     onError: form => {
       console.error('Form Error')
     },
@@ -33,7 +26,7 @@ export class Settings extends Component<SettingsProps> {
     }
   }
 
-  formFields = {
+  const formFields = {
     first_name: {
       label: 'First Name',
       placeholder: 'Insert First Name',
@@ -47,49 +40,42 @@ export class Settings extends Component<SettingsProps> {
       default: 'Doe'
     }
   }
-  form = new MobxReactForm(
-    { fields: this.formFields },
-    { plugins: { dvr: dvr(validatorjs) }, hooks: this.formHooks }
+  const form = new MobxReactForm(
+    { fields: formFields },
+    { plugins: { dvr: dvr(validatorjs) }, hooks: formHooks }
   )
-  render() {
-    return (
-      <div className='p-8'>
-        <form onSubmit={this.form.onSubmit}>
-          <MaterialTextField
-            testId='first_name'
-            field={this.form.$('first_name')}
-          />
-          <MaterialTextField
-            testId='last_name'
-            field={this.form.$('last_name')}
-          />
 
-          <br />
-          <Button
-            data-testid='submit_button'
-            className='mr-2'
-            variant='outlined'
-            color='primary'
-            onClick={this.form.onSubmit}
-          >
-            Submit
-          </Button>
-          <Button
-            className='mr-2'
-            variant='outlined'
-            color='secondary'
-            onClick={this.form.onClear}
-          >
-            Clear
-          </Button>
-          <Button variant='outlined' onClick={this.form.onReset}>
-            Reset
-          </Button>
+  return (
+    <div className='p-8'>
+      <form onSubmit={form.onSubmit}>
+        <MaterialTextField testId='first_name' field={form.$('first_name')} />
+        <MaterialTextField testId='last_name' field={form.$('last_name')} />
 
-          <p>{this.form.error}</p>
-        </form>
-        <SnackbarPopup config={this.popupConfig} />
-      </div>
-    )
-  }
-}
+        <br />
+        <Button
+          data-testid='submit_button'
+          className='mr-2'
+          variant='outlined'
+          color='primary'
+          onClick={form.onSubmit}
+        >
+          Submit
+        </Button>
+        <Button
+          className='mr-2'
+          variant='outlined'
+          color='secondary'
+          onClick={form.onClear}
+        >
+          Clear
+        </Button>
+        <Button variant='outlined' onClick={form.onReset}>
+          Reset
+        </Button>
+
+        <p>{form.error}</p>
+      </form>
+      <SnackbarPopup config={popupConfig} />
+    </div>
+  )
+})

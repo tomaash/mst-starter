@@ -13,8 +13,9 @@ import { RouteComponentProps } from '@reach/router'
 import { useStore } from '~/stores/MainStore'
 
 export const ListPageComponent = observer<RouteComponentProps>(props => {
-  const store = useStore()
-  const { userStore, clickStore } = store
+  const { mainStore } = useStore()
+  const { userStore, clickStore } = mainStore
+
   useDidMount(() => {
     userStore.loadUsers()
   })
@@ -22,12 +23,12 @@ export const ListPageComponent = observer<RouteComponentProps>(props => {
     clickStore.inc()
   }
 
-  // const localState = useLocalStore(() => ({
-  //   count: 0,
-  //   inc() {
-  //     localState.count += 1
-  //   }
-  // }))
+  const localState = useLocalStore(() => ({
+    count: 0,
+    inc() {
+      localState.count += 1
+    }
+  }))
   return (
     <>
       <Table>
@@ -48,9 +49,16 @@ export const ListPageComponent = observer<RouteComponentProps>(props => {
           })}
         </TableBody>
       </Table>
-      <Button onClick={handleClick}>Click count: {clickStore.count}</Button>
+      <Button onClick={handleClick}>
+        Click store count: {clickStore.count}
+      </Button>
+      <br />
+      <Button onClick={localState.inc}>
+        Click local count: {localState.count}
+      </Button>
     </>
   )
 })
 
-export const ListPage = ListPageComponent //inject('userStore')(ListPageComponent)
+// TODO: refactor to smart & dumb
+export const ListPage = ListPageComponent
