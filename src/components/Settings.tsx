@@ -48,7 +48,11 @@ export const Settings = observer<RouteComponentProps>(props => {
   return (
     <div className='p-8'>
       <form onSubmit={form.onSubmit}>
-        <MaterialTextField testId='first_name' field={form.$('first_name')} />
+        <MaterialTextField
+          className='mb-5'
+          testId='first_name'
+          field={form.$('first_name')}
+        />
         <MaterialTextField testId='last_name' field={form.$('last_name')} />
 
         <br />

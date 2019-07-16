@@ -5,6 +5,7 @@ import { TextField } from '@material-ui/core'
 export const MaterialTextField = observer<{
   field: any
   testId?: string
+  className?: string
 }>(props => {
   const { field, testId, ...rest } = props
   return (
