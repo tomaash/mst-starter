@@ -39,7 +39,7 @@ export const ListPageComponent = observer<RouteComponentProps>(props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {userStore.users.map(item => {
+          {userStore.sortedUsers.map(item => {
             return (
               <TableRow data-testid='table-row' key={item.id}>
                 <TableCell>{item.first_name}</TableCell>
