@@ -21,8 +21,9 @@ export const Settings = observer<RouteComponentProps>(props => {
     },
     onSuccess: async form => {
       const values = form.values()
-      await this.props.appStore.saveSettings(values)
-      this.popupConfig.open = true
+      // await this.props.appStore.saveSettings(values)
+      console.log(values)
+      popupConfig.open = true
     }
   }
 
